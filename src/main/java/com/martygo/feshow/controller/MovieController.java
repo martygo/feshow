@@ -1,6 +1,10 @@
 package com.martygo.feshow.controller;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +16,9 @@ import com.martygo.feshow.domain.Movie;
 import com.martygo.feshow.services.MovieService;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/movies")
 public class MovieController {
@@ -22,8 +28,11 @@ public class MovieController {
 
     @PostMapping
     public ResponseEntity<Movie> save(@Valid @RequestBody Movie movie) {
-        Movie savedMovie = movieService.create(movie);
+        movie.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
+        movie.setUpdatedAt(LocalDateTime.now(ZoneId.of("UTC")));
 
-        return new ResponseEntity<Movie>(savedMovie, HttpStatus.CREATED);
+        log.info("Saving movie: {}", movie);
+
+        return new ResponseEntity<Movie>(movieService.create(movie), HttpStatus.CREATED);
     }
 }
