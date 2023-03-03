@@ -9,7 +9,7 @@ import java.util.Optional;
 import com.martygo.feshow.domain.Movie;
 import com.martygo.feshow.services.MovieService;
 import com.martygo.feshow.dtos.MovieDTO;
-import com.martygo.feshow.handleError.MovieError;
+import com.martygo.feshow.handleError.HandleError;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,7 +46,7 @@ public class MovieController {
         if(movieService.existsByTitle(movieDTO.getTitle())) {
             log.error(errorMessage);
 
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new MovieError(errorMessage));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new HandleError(errorMessage));
         }
 
         movie.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
@@ -83,11 +83,11 @@ public class MovieController {
         Optional<Movie> movieOptional = movieService.findById(id);
 
         if (!movieOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MovieError("Movie not found"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HandleError("Movie not found"));
         }
 
         if (movieOptional.get().getId() != id) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MovieError("Movie not found"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HandleError("Movie not found"));
         }
 
         movieService.delete(movieOptional.get());
@@ -108,11 +108,11 @@ public class MovieController {
         BeanUtils.copyProperties(movieDTO, movie);
 
         if (!movieOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MovieError(errorMessage));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HandleError(errorMessage));
         }
 
         if (movieOptional.get().getId() != id) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MovieError(errorMessage));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HandleError(errorMessage));
         }
 
         movie.setId(movieOptional.get().getId());
