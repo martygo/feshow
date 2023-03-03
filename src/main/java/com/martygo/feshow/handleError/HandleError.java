@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor @NoArgsConstructor
-public class MovieError {
+public class HandleError {
     private String error;
 }
