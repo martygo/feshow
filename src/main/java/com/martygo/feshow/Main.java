@@ -1,5 +1,8 @@
 package com.martygo.feshow;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +26,8 @@ public class Main {
 			.genre("action")
 			.isRelease(true)
 			.year(1999)
+			.createdAt(LocalDateTime.now(ZoneId.of("UTC")))
+			.updatedAt(LocalDateTime.now(ZoneId.of("UTC")))
 			.build();
 
 			movieRepository.save(movie);
