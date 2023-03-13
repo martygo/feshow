@@ -4,37 +4,53 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.martygo.feshow.domain.Movie;
 import com.martygo.feshow.repo.MovieRepository;
 
 @SpringBootApplication
+@RestController
 public class Main {
 
-	@Bean
-	public CommandLineRunner commandLineRunner(@Autowired MovieRepository movieRepository) {
-		return args -> {
-			Movie movie = Movie.builder()
-			.title("The Matrix")
-			.description("movie")
-			.poster("poster")
-			.trailer("poster")
-			.genre("action")
-			.isRelease(true)
-			.year(1999)
-			.createdAt(LocalDateTime.now(ZoneId.of("UTC")))
-			.updatedAt(LocalDateTime.now(ZoneId.of("UTC")))
-			.build();
+    @Value("${application.name}")
+    private String appName;
 
-			movieRepository.save(movie);
-		};
-	}
+    @Bean
+    @Profile("dev")
+    CommandLineRunner commandLineRunner(@Autowired MovieRepository movieRepository) {
+        return args -> {
+            System.out.println("Desenvolvimento!");
 
-	public static void main(String[] args) {
+            Movie movie = Movie.builder()
+                    .title("The Matrix")
+                    .description("movie")
+                    .poster("poster")
+                    .trailer("poster")
+                    .genre("action")
+                    .isRelease(true)
+                    .year(1999)
+                    .createdAt(LocalDateTime.now(ZoneId.of("UTC")))
+                    .updatedAt(LocalDateTime.now(ZoneId.of("UTC")))
+                    .build();
+
+            movieRepository.save(movie);
+        };
+    }
+
+    @GetMapping("/")
+    public String init() {
+        return appName;
+    }
+
+    public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);
 	}
 
