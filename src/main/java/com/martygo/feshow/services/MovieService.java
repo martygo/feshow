@@ -3,7 +3,7 @@ package com.martygo.feshow.services;
 import java.util.Optional;
 
 import com.martygo.feshow.domain.Movie;
-import com.martygo.feshow.repo.MovieRepository;
+import com.martygo.feshow.repository.MovieRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

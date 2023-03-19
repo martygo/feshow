@@ -1,7 +1,7 @@
 package com.martygo.feshow.services;
 
-import com.martygo.feshow.repo.CategoryRepository;
 import com.martygo.feshow.domain.Category;
+import com.martygo.feshow.repository.CategoryRepository;
 
 import java.util.Optional;
 

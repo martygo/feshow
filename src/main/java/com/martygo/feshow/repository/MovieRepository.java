@@ -1,4 +1,4 @@
-package com.martygo.feshow.repo;
+package com.martygo.feshow.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.martygo.feshow.domain.Movie;

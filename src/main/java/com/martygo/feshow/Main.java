@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.martygo.feshow.domain.Movie;
-import com.martygo.feshow.repo.MovieRepository;
+import com.martygo.feshow.repository.MovieRepository;
 
 @SpringBootApplication
 @RestController
