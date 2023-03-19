@@ -1,7 +1,10 @@
 package com.martygo.feshow.dtos;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,7 +24,7 @@ public class MovieDTO {
 
     private String description;
     private String trailer;
-    private String genre;
+    private List<CategoryDTO> categories;
     private Boolean isRelease;
     private int year;
 }
