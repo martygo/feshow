@@ -59,7 +59,7 @@ public class Main {
         };
     }
 
-    @GetMapping("/")
+    @GetMapping("/welcome")
     public String init() {
         return appName;
     }
