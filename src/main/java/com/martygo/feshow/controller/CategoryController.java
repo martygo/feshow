@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.BeanUtils;
 
@@ -32,6 +33,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> save(@Valid @RequestBody CategoryDTO categoryDTO) {
         String errorMessage = String.format("Category with name %s already exists", categoryDTO.getName());
 
@@ -59,6 +61,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         log.info("Deleting movie by id: {}", id);
 
