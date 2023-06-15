@@ -2,6 +2,7 @@ package com.martygo.feshow.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -14,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
     @Bean
@@ -27,7 +29,7 @@ public class WebSecurityConfig {
 
         UserDetails user = User.withUsername("martins")
                 .password(cryptPassword)
-                .roles("USER")
+                .roles("USER", "ADMIN")
                 .build();
 
         return new InMemoryUserDetailsManager(admin, user);
@@ -35,12 +37,13 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                 .requestMatchers("/welcome").permitAll()
-                .requestMatchers("/categories/**").hasRole("ADMIN")
+                .requestMatchers("/categories").hasRole("USER")
                 .requestMatchers("/movies/**").hasRole("USER")
                 .anyRequest().authenticated())
-                .httpBasic(httpBasic -> {});
+                .httpBasic(httpBasic -> {
+                });
 
         return http.build();
     }
