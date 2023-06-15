@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.BeanUtils;
 
@@ -35,6 +36,7 @@ public class MovieController {
     private MovieService movieService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> save(@Valid @RequestBody MovieDTO movieDTO) {
         String errorMessage = String.format("Movie with title %s already exists", movieDTO.getTitle());
 
@@ -76,6 +78,7 @@ public class MovieController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         log.info("Deleting movie by id: {}", id);
 
@@ -95,6 +98,7 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody @Valid MovieDTO movieDTO) {
         log.info("Updating movie by id: {}", id);
 
