@@ -45,15 +45,8 @@ public class Main {
                     .slug("action")
                     .movie(movie)
                     .build();
-                
-            Category category2 = Category.builder()
-                    .name("Sci-Fi")
-                    .slug("sci-fi")
-                    .movie(movie)
-                    .build();
 
             movie.getCategories().add(category);
-            movie.getCategories().add(category2);
             
             movieRepository.save(movie);
         };
