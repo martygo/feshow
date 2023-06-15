@@ -22,14 +22,14 @@ public class WebSecurityConfig {
     UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         String cryptPassword = passwordEncoder.encode("1234");
 
-        UserDetails admin = User.withUsername("marty")
+        UserDetails admin = User.withUsername("admin")
                 .password(cryptPassword)
                 .roles("ADMIN")
                 .build();
 
-        UserDetails user = User.withUsername("martins")
+        UserDetails user = User.withUsername("user")
                 .password(cryptPassword)
-                .roles("USER", "ADMIN")
+                .roles("USER")
                 .build();
 
         return new InMemoryUserDetailsManager(admin, user);
@@ -39,11 +39,10 @@ public class WebSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()).authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                 .requestMatchers("/welcome").permitAll()
-                .requestMatchers("/categories").hasRole("USER")
-                .requestMatchers("/movies/**").hasRole("USER")
+                .requestMatchers("/categories/**", "/movies/**")
+                .hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated())
-                .httpBasic(httpBasic -> {
-                });
+                .httpBasic(httpBasic -> {});
 
         return http.build();
     }
