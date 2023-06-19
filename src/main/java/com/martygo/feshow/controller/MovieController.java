@@ -65,12 +65,12 @@ public class MovieController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> getById(@PathVariable Long id) {
         log.info("Getting movie by id: {}", id);
 
         Optional<Movie> movie = movieService.findById(id);
 
-        if (!movie.isPresent()) {
+        if (movie.isEmpty()) {
             return new ResponseEntity<Object>("Movie not found.", HttpStatus.NOT_FOUND);
         }
 
@@ -79,12 +79,12 @@ public class MovieController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         log.info("Deleting movie by id: {}", id);
 
         Optional<Movie> movieOptional = movieService.findById(id);
 
-        if (!movieOptional.isPresent()) {
+        if (movieOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HandleError("Movie not found"));
         }
 
@@ -99,10 +99,10 @@ public class MovieController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody @Valid MovieDTO movieDTO) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid MovieDTO movieDTO) {
         log.info("Updating movie by id: {}", id);
 
-        String errorMessage = String.format("Movie not found with id %s", id.toString());
+        String errorMessage = "Movie not found with id %s".formatted(id.toString());
 
         Optional<Movie> movieOptional = movieService.findById(id);
 
@@ -110,7 +110,7 @@ public class MovieController {
 
         BeanUtils.copyProperties(movieDTO, movie);
 
-        if (!movieOptional.isPresent()) {
+        if (movieOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HandleError(errorMessage));
         }
 

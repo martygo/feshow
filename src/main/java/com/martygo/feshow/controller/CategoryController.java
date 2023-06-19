@@ -67,7 +67,7 @@ public class CategoryController {
 
         Optional<Category> categoryOptional = categoryService.findById(id);
 
-        if(!categoryOptional.isPresent()) {
+        if(categoryOptional.isEmpty()) {
             log.error("Category with id {} not found", id);
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HandleError("Category not found"));
