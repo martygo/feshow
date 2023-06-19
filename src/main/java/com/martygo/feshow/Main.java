@@ -21,7 +21,7 @@ import com.martygo.feshow.repository.MovieRepository;
 @RestController
 public class Main {
 
-    @Value("${application.name}")
+    @Value("${spring.application.name}")
     private String appName;
 
     @Bean
