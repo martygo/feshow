@@ -33,3 +33,8 @@ build/
 ### VS Code ###
 .vscode/
 TODO.md
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
