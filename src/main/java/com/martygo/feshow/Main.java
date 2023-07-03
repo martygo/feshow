@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.martygo.feshow.domain.Category;
 import com.martygo.feshow.domain.Movie;
+import com.martygo.feshow.domain.Wish;
 import com.martygo.feshow.repository.MovieRepository;
+import com.martygo.feshow.repository.WishRepository;
 
 @SpringBootApplication
 @RestController
@@ -26,7 +28,7 @@ public class Main {
 
     @Bean
     @Profile("dev")
-    CommandLineRunner commandLineRunner(@Autowired MovieRepository movieRepository) {
+    CommandLineRunner commandLineRunner(@Autowired MovieRepository movieRepository, @Autowired WishRepository wishRepository) {
         return args -> {
 
             Movie movie = Movie.builder()
@@ -46,9 +48,17 @@ public class Main {
                     .movie(movie)
                     .build();
 
+            Wish wish = Wish.builder()
+                    .username("martygo")
+                    .movie("The Matrix")
+                    .createdAt(LocalDateTime.now(ZoneId.of("UTC")))
+                    .updatedAt(LocalDateTime.now(ZoneId.of("UTC")))
+                    .build();
+
             movie.getCategories().add(category);
             
             movieRepository.save(movie);
+            wishRepository.save(wish);
         };
     }
 
